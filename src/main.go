@@ -17,11 +17,13 @@ func main() {
 	//handlers
 	hh := handlers.NewHello(l)
 	gh := handlers.NewGoodbye(l)
+	ph := handlers.NewProducts(l)
 
 	// serve mux is multiplexer
 	mux := http.NewServeMux()
 	mux.Handle("/", hh)
 	mux.Handle("/goodbye", gh)
+	mux.Handle("/products", ph)
 	// we can use browser localhost:9090
 	// first parameter bind address and second parameter is the handler
 	// if we do not have any http handler system automaticly going default serve mux
