@@ -9,21 +9,37 @@ import (
 	"time"
 
 	"github.com/berkayhellagun/microservice/src/handlers"
+	"github.com/gorilla/mux"
 )
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
 	//handlers
-	hh := handlers.NewHello(l)
-	gh := handlers.NewGoodbye(l)
+	// hh := handlers.NewHello(l)
+	// gh := handlers.NewGoodbye(l)
 	ph := handlers.NewProducts(l)
 
 	// serve mux is multiplexer
-	mux := http.NewServeMux()
-	mux.Handle("/", hh)
-	mux.Handle("/goodbye", gh)
-	mux.Handle("/products", ph)
+	// m := http.NewServeMux()
+	// m.Handle("/", hh)
+	// m.Handle("/goodbye", gh)
+
+	// gorilla mux extension
+	sm := mux.NewRouter()
+	// get verb using
+	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/", ph.GetProducts)
+
+	// put verb using
+	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProduct)
+	putRouter.Use(ph.MiddlewareProductValidation)
+	//post verb using
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", ph.AddProduct)
+	postRouter.Use(ph.MiddlewareProductValidation)
+	//sm.Handle("/products", ph)
 	// we can use browser localhost:9090
 	// first parameter bind address and second parameter is the handler
 	// if we do not have any http handler system automaticly going default serve mux
@@ -32,7 +48,7 @@ func main() {
 	// create custom server with configuration
 	s := &http.Server{
 		Addr:         ":9090",
-		Handler:      mux,
+		Handler:      sm,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
