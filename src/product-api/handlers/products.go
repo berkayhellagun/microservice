@@ -82,6 +82,11 @@ func getProductID(r *http.Request) int {
 	return id
 }
 
+// GenericError is a generic error message returned by a server
+type GenericError struct {
+	Message string `json:"message"`
+}
+
 type KeyProduct struct{}
 
 func (p Products) MiddlewareProductValidation(next http.Handler) http.Handler {
