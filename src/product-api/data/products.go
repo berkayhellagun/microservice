@@ -1,9 +1,7 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"regexp"
 	"time"
 
@@ -19,11 +17,6 @@ type Product struct {
 	CreatedOn   string  `json:"-"`
 	UpdatedOn   string  `json:"-"`
 	DeleteOn    string  `json:"-"`
-}
-
-func (p *Product) FromJSON(r io.Reader) error {
-	decode := json.NewDecoder(r)
-	return decode.Decode(p)
 }
 
 func (p *Product) Validate() error {
@@ -47,11 +40,6 @@ func validateSKU(fl validator.FieldLevel) bool {
 }
 
 type Products []*Product
-
-func (p *Products) ToJSON(w io.Writer) error {
-	encoder := json.NewEncoder(w)
-	return encoder.Encode(p)
-}
 
 func GetProducts() Products {
 	return productList
