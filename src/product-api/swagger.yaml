@@ -2,6 +2,14 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  GenericError:
+    description: GenericError is a generic error message returned by a server
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/berkayhellagun/microservice/src/product-api/handlers
   Product:
     description: Product defines the structure for an api Product
     properties:
@@ -38,6 +46,16 @@ definitions:
     - sku
     type: object
     x-go-package: github.com/berkayhellagun/microservice/src/product-api/data
+  ValidationError:
+    description: ValidationError is a collection of validation error messages
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
+        x-go-name: Messages
+    type: object
+    x-go-package: github.com/berkayhellagun/microservice/src/product-api/handlers
 info:
   description: '# Documentation for Product API'
   title: of Product API
@@ -99,8 +117,20 @@ paths:
 produces:
 - application/json
 responses:
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  errorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
   noContent:
     description: ""
+  productResponse:
+    description: Data structure representing a single product
+    schema:
+      $ref: '#/definitions/Product'
   productsResponse:
     description: A list of products return in the response
     schema:
