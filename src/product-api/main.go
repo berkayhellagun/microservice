@@ -30,7 +30,7 @@ func main() {
 	sm := mux.NewRouter()
 	// get verb using
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/", ph.GetProducts)
+	getRouter.HandleFunc("/", ph.ListAll)
 
 	// put verb using
 	putRouter := sm.Methods(http.MethodPut).Subrouter()

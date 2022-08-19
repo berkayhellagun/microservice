@@ -103,6 +103,14 @@ func DeleteProduct(id int) error {
 	return nil
 }
 
+func GetProductById(id int) (*Product, error) {
+	index := findIndexByProductID(id)
+	if index == -1 {
+		return nil, ErrProductNotFound
+	}
+	return productList[index], nil
+}
+
 // findIndex finds the index of a product in the database
 // returns -1 when no product can be found
 func findIndexByProductID(id int) int {
