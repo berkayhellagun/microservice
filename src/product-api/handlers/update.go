@@ -8,6 +8,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// swagger:route PUT /products products updateProduct
+// Update product detail
+//
+// responses:
+//	201:noContentResponse
+// 404: errorResponse
+// 422: errorValidation
+
 func (p *Products) UpdateProduct(rw http.ResponseWriter, r *http.Request) {
 	// gorilla provide this struct
 	vars := mux.Vars(r)

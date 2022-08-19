@@ -3,6 +3,7 @@ consumes:
 - application/json
 definitions:
   Product:
+    description: Product defines the structure for an api Product
     properties:
       description:
         description: the description for this product
@@ -48,6 +49,30 @@ paths:
       responses:
         "200":
           $ref: '#/responses/productsResponse'
+      tags:
+      - products
+    post:
+      description: Add new Product
+      operationId: addProduct
+      responses:
+        "200":
+          $ref: '#/responses/productResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - products
+    put:
+      description: Update product detail
+      operationId: updateProduct
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
       tags:
       - products
   /products/{id}:
