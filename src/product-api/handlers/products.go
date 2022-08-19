@@ -2,15 +2,15 @@
 //
 // # Documentation for Product API
 //
-// Schemes: http
-// BasePath: /
-// Verion: 1.0.0
+//	Schemes: http
+//	BasePath: /
+//	Verion: 1.0.0
 //
-// Consumes:
-// -application/json
+//	Consumes:
+//	-application/json
 //
-// Produces:
-// -application/json
+//	Produces:
+//	-application/json
 //
 //swagger:meta
 package handlers
@@ -25,6 +25,26 @@ import (
 	"github.com/berkayhellagun/microservice/src/product-api/data"
 	"github.com/gorilla/mux"
 )
+
+// A list of products return in the response
+// swagger:response productsResponse
+type productsResponseWrapper struct {
+	// All products in the system
+	// in: body
+	Body []data.Product
+}
+
+// swagger:response noContent
+type productsNoContent struct {
+}
+
+// swagger:parameters deleteProduct
+type productIDParameterWrapper struct {
+	// The ID of the product to delete from the database
+	// in: path
+	// required: true
+	ID int `json:"id"`
+}
 
 type Products struct {
 	l *log.Logger

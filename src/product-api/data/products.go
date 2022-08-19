@@ -3,20 +3,42 @@ package data
 import (
 	"fmt"
 	"regexp"
-	"time"
 
 	"github.com/go-playground/validator"
 )
 
+// Product defines the structure for an api Product
+// swagger:model
 type Product struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name" validate:"required"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price" validate:"gt=0"`
-	SKU         string  `json:"sku" validate:"required,sku"`
-	CreatedOn   string  `json:"-"`
-	UpdatedOn   string  `json:"-"`
-	DeleteOn    string  `json:"-"`
+	// the id for the product
+	//
+	// required: false
+	// min: 1
+	ID int `json:"id"` // Unique identifier for the product
+
+	// the name for this product
+	//
+	// required: true
+	// max length: 255
+	Name string `json:"name"`
+
+	// the description for this product
+	//
+	// required: false
+	// max length: 10000
+	Description string `json:"description"`
+
+	// the price for the product
+	//
+	// required: true
+	// min: 0.01
+	Price float32 `json:"price"`
+
+	// the SKU for the product
+	//
+	// required: true
+	// pattern: [a-z]+-[a-z]+-[a-z]+
+	SKU string `json:"sku" validate:"sku"`
 }
 
 func (p *Product) Validate() error {
@@ -33,10 +55,10 @@ func validateSKU(fl validator.FieldLevel) bool {
 	match := rege.FindAllString(fl.Field().String(), -1)
 
 	// if we dont have any match validation is gonna be fail
-	if len(match) != 1 {
-		return false
+	if len(match) == 1 {
+		return true
 	}
-	return true
+	return false
 }
 
 type Products []*Product
@@ -105,8 +127,6 @@ var productList = []*Product{
 		Description: "Milky Coffee",
 		Price:       15.25,
 		SKU:         "abc2121",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
 	},
 	&Product{
 		ID:          2,
@@ -114,7 +134,5 @@ var productList = []*Product{
 		Description: "Without milk",
 		Price:       10.25,
 		SKU:         "zxc123",
-		CreatedOn:   time.Now().UTC().String(),
-		UpdatedOn:   time.Now().UTC().String(),
 	},
 }
