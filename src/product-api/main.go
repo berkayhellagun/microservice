@@ -70,6 +70,7 @@ func main() {
 
 	//http.ListenAndServe(":9090", mux)
 	go func() {
+		l.Println("Starting server on port 9090")
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
